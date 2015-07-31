@@ -742,6 +742,11 @@ dispatchDial (Parcel &p, RequestInfo *pRI) {
 
     memset (&dial, 0, sizeof(dial));
 
+    /* This is needed in order to avoid a crash in qcom's ril library
+       It doesn't make much sense, as dial.uusInfo will be set to NULL
+       My best guess is that they are simply reading beyond *dial.... */
+    memset (&uusInfo, 0, sizeof(RIL_UUS_Info));
+
     dial.address = strdupReadString(p);
 
     status = p.readInt32(&t);
